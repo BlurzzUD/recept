@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Családi Recept Kereső</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍳 Családi Recept Kereső</h1>
+            <p>Először élő weboldalak, majd 1000+ receptes adatbázis</p>
+            <div class="sources">
+                <span>mindmegette.hu</span>
+                <span>nosalty.hu</span>
+                <span>1000+ helyi recept</span>
+            </div>
+        </header>
+
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Mit szeretnél főzni? (pl. birsalmasajt, pörkölt)...">
+            <button id="searchBtn" onclick="searchRecipes()">🔍 Keresés</button>
+            
+            <div class="quick-search">
+                <button onclick="quickSearch('birsalmasajt')">Birsalmasajt</button>
+                <button onclick="quickSearch('pörkölt')">Pörkölt</button>
+                <button onclick="quickSearch('palacsinta')">Palacsinta</button>
+                <button onclick="quickSearch('gulyás')">Gulyás</button>
+            </div>
+        </div>
+
+        <button class="random-btn" onclick="generateRandomMeal()">🎲 Véletlen 2 Fogásos Menü</button>
+
+        <div id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Keresés...</p>
+        </div>
+
+        <div id="results"></div>
+        <div id="randomMeal" style="display: none;"></div>
+
+        <div id="message" class="message-box" style="display: none;"></div>
+
+        <footer>
+            <p>🌐 Először élő oldalak, 📚 majd 1000+ receptes adatbázis • Családi használatra</p>
+        </footer>
+    </div>
+
+    <!-- Load scripts in order -->
+    <script src="scraper.js"></script>
+    <script src="recipe-database.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
