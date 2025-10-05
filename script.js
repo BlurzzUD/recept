@@ -1,15 +1,35 @@
-class CorrectScraper {
+class RealBrowserScraper {
     constructor() {
-        this.proxies = [
-            'https://corsproxy.io/?',
-            'https://api.allorigins.win/raw?url=',
-            'https://cors-anywhere.herokuapp.com/'
-        ];
         this.fallbackData = this.getFallbackData();
+        this.recipeCache = new Map();
+        this.userAgent = navigator.userAgent; // Get actual browser UA
+        console.log('🌐 Using User Agent:', this.userAgent);
     }
 
     getFallbackData() {
         return {
+            'birsalmasajt': [
+                {
+                    title: 'Birsalmasajt egyszerűen',
+                    source: 'mindmegette.hu',
+                    url: 'https://www.mindmegette.hu/birsalmasajt-egyszeruen.recept/',
+                    ingredients: [
+                        '2 kg birsalma',
+                        '1 kg cukor', 
+                        '2 db citrom leve',
+                        '1 tk fahéj',
+                        '1/2 tk szegfűszeg',
+                        '1 csomag vaníliás cukor'
+                    ],
+                    instructions: [
+                        'A birsalmát megmossuk, kicsumázzuk és felaprítjuk.',
+                        'Egy lábasba tesszük a birsalmát, cukrot, citromlevet és fűszereket.',
+                        'Lassú tűzön főzzük, amíg az alma szétesik és a massza sűrű lesz.',
+                        'Folyamatosan keverjük, hogy ne égjen le.',
+                        'Forrón üvegekbe töltjük és lekötjük.'
+                    ]
+                }
+            ],
             'pörkölt': [
                 {
                     title: 'Marhapörkölt klasszikus recept',
@@ -18,7 +38,7 @@ class CorrectScraper {
                     ingredients: [
                         '80 dkg marhalábszár',
                         '2 fej vöröshagyma',
-                        '2 gerezd fokhagyma',
+                        '2 gerezd fokhagyma', 
                         '2 ek liszt',
                         '2 ek olaj',
                         '1 tk pirospaprika',
@@ -44,7 +64,7 @@ class CorrectScraper {
                         '25 dkg liszt',
                         '3 db tojás',
                         '3 dl tej',
-                        '3 dl szódavíz',
+                        '3 dl szódavíz', 
                         '1 csomag vaníliás cukor',
                         '1 csipet só',
                         '2 ek olaj a sütéshez'
@@ -56,548 +76,426 @@ class CorrectScraper {
                         'A tésztát legalább 30 percig pihentetjük.',
                         'Forró serpenyőben vékonyan kisütjük mindkét oldalát.'
                     ]
-                },
-                {
-                    title: 'Vékony palacsinta',
-                    source: 'mindmegette.hu',
-                    url: 'https://www.mindmegette.hu/vekonypalacsinta.recept/',
-                    ingredients: [
-                        '20 dkg finomliszt',
-                        '2 db tojás',
-                        '4 dl tej',
-                        '2 dl szénsavmentes ásványvíz',
-                        '1 ek olaj',
-                        '1 csipet só'
-                    ],
-                    instructions: [
-                        'A lisztet a tojásokkal elkeverjük.',
-                        'Fokozatosan hozzáadjuk a tejet és ásványvizet.',
-                        'Az olajat és sót hozzáadjuk, simára keverjük.',
-                        'A tésztát 15 percig pihentetjük.',
-                        'Forró palacsintasütőben kisütjük.'
-                    ]
-                }
-            ],
-            'gulyás': [
-                {
-                    title: 'Gulyásleves eredeti recept',
-                    source: 'mindmegette.hu',
-                    url: 'https://www.mindmegette.hu/gulyasleves.recept/',
-                    ingredients: [
-                        '60 dkg marhalábszár',
-                        '2 fej vöröshagyma',
-                        '2 gerezd fokhagyma',
-                        '2 db sárgarépa',
-                        '1 db petrezselyemgyökér',
-                        '2 db zeller',
-                        '3 db burgonya',
-                        '2 ek olaj',
-                        '1 ek pirospaprika',
-                        '1 tk kömény',
-                        'só, bors ízlés szerint'
-                    ],
-                    instructions: [
-                        'A hagymát apróra vágjuk, az olajon megpirítjuk.',
-                        'Hozzáadjuk a felkockázott húst és pirospaprikát.',
-                        'Felöntjük vízzel, hozzáadjuk a köményt.',
-                        'Hozzáadjuk a karikára vágott zöldségeket.',
-                        'Sózzuk, borsozzuk, és puhára főzzük.'
-                    ]
-                }
-            ],
-            'töltött paprika': [
-                {
-                    title: 'Töltött paprika',
-                    source: 'nosalty.hu',
-                    url: 'https://www.nosalty.hu/recept/toltott-paprika',
-                    ingredients: [
-                        '8 db zöldpaprika',
-                        '50 dkg darált sertéshús',
-                        '15 dkg rizs',
-                        '1 fej vöröshagyma',
-                        '2 gerezd fokhagyma',
-                        '1 db tojás',
-                        'só, bors, petrezselyem',
-                        '2 db paradicsom',
-                        '1 db zellerlevél'
-                    ],
-                    instructions: [
-                        'A paprikák magházát kivágjuk.',
-                        'A darált húst a főtt rizzsel, hagymával, fűszerekkel összedolgozzuk.',
-                        'A paprikákat megtöltjük a masszával.',
-                        'Egymás mellé ültetjük egy lábasba.',
-                        'Felöntjük vízzel, paradicsommal, és puhára főzzük.'
-                    ]
-                }
-            ],
-            'rántott hús': [
-                {
-                    title: 'Rántott csirkecomb',
-                    source: 'mindmegette.hu',
-                    url: 'https://www.mindmegette.hu/rantott-csirkecomb.recept/',
-                    ingredients: [
-                        '4 db csirkecomb',
-                        '15 dkg liszt',
-                        '2 db tojás',
-                        '10 dkg zsemlemorzsa',
-                        'só ízlés szerint',
-                        'olívaolaj a sütéshez'
-                    ],
-                    instructions: [
-                        'A csirkecombokat megmossuk, megsózzuk.',
-                        'Lisztbe, tojásba, majd zsemlemorzsába forgatjuk.',
-                        'Forró olajban mindkét oldalát aranybarnára sütjük.',
-                        'Papírtörölközőn lecsöpögtetjük.',
-                        'Friss salátával tálaljuk.'
-                    ]
-                }
-            ],
-            'tészta': [
-                {
-                    title: 'Spagetti carbonara',
-                    source: 'nosalty.hu',
-                    url: 'https://www.nosalty.hu/recept/spagetti-carbonara',
-                    ingredients: [
-                        '40 dkg spagetti',
-                        '15 dkg pancetta vagy szalonna',
-                        '2 db tojás',
-                        '10 dkg reszelt parmezán',
-                        '2 gerezd fokhagyma',
-                        'só, bors ízlés szerint',
-                        'olívaolaj'
-                    ],
-                    instructions: [
-                        'A spagetti forró sós vízben kifőzzük.',
-                        'A pancettát ropogósra sütjük.',
-                        'A tojásokat a reszelt sajttal elkeverjük.',
-                        'A forró tésztát a tojásos keverékkel összerázogatjuk.',
-                        'A pancettát és fokhagymát hozzáadjuk.'
-                    ]
                 }
             ]
         };
     }
 
-    async fetchWithRetry(url, retries = 3) {
-        for (let attempt = 0; attempt < retries; attempt++) {
-            for (const proxy of this.proxies) {
-                try {
-                    const proxyUrl = proxy + encodeURIComponent(url);
-                    console.log(`Trying: ${proxyUrl.substring(0, 100)}...`);
-                    
-                    const response = await fetch(proxyUrl, {
-                        headers: {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        const text = await response.text();
-                        if (text && text.length > 500) {
-                            console.log('✅ Success with proxy');
-                            return text;
-                        }
-                    }
-                } catch (error) {
-                    console.warn(`❌ Proxy failed:`, error.message);
-                    continue;
-                }
-            }
+    async fetchWithUserAgent(url) {
+        try {
+            console.log('🔗 Fetching:', url);
             
-            // Wait before retry
-            if (attempt < retries - 1) {
-                console.log(`🔄 Retry ${attempt + 1} in ${attempt + 1} seconds...`);
-                await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'User-Agent': this.userAgent,
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'hu-HU,hu;q=0.9,en;q=0.8',
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
+                },
+                mode: 'cors',
+                credentials: 'omit'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
+
+            const text = await response.text();
+            
+            if (!text || text.length < 1000) {
+                throw new Error('Response too short or empty');
+            }
+
+            console.log('✅ Successfully fetched page');
+            return text;
+
+        } catch (error) {
+            console.error('❌ Fetch failed:', error.message);
+            throw error;
         }
-        throw new Error('All proxies failed');
     }
 
     async searchRecipes(query) {
         console.log('🔍 Searching for:', query);
         
-        // First check fallback data
         const lowerQuery = query.toLowerCase();
-        if (this.fallbackData[lowerQuery]) {
-            console.log('📚 Using fallback data for:', query);
-            return this.fallbackData[lowerQuery];
+        
+        // Check cache first
+        if (this.recipeCache.has(lowerQuery)) {
+            console.log('📚 Using cached results');
+            return this.recipeCache.get(lowerQuery);
         }
         
-        const results = [];
+        // Check fallback data
+        if (this.fallbackData[lowerQuery]) {
+            console.log('📚 Using fallback data');
+            const results = this.fallbackData[lowerQuery];
+            this.recipeCache.set(lowerQuery, results);
+            return results;
+        }
         
-        // Try real scraping with CORRECT URLs
+        // Try real scraping with user's browser
         try {
-            console.log('🌐 Trying real scraping...');
-            const realResults = await this.tryRealScraping(query);
-            if (realResults.length > 0) {
+            console.log('🌐 Attempting real search with user browser...');
+            const realResults = await this.performRealSearch(query);
+            if (realResults && realResults.length > 0) {
+                this.recipeCache.set(lowerQuery, realResults);
                 return realResults;
             }
         } catch (error) {
-            console.log('⚠️ Real scraping failed, using enhanced fallback:', error.message);
+            console.log('⚠️ Real search failed:', error.message);
         }
         
         // Enhanced fallback
-        return this.createEnhancedFallback(query);
+        console.log('📝 Creating enhanced fallback');
+        const fallback = this.createEnhancedFallback(query);
+        this.recipeCache.set(lowerQuery, fallback);
+        return fallback;
     }
 
-    async tryRealScraping(query) {
+    async performRealSearch(query) {
         const results = [];
         
-        // Try Mindmegette with CORRECT URL
-        try {
-            const mindmegetteResults = await this.scrapeMindmegette(query);
-            results.push(...mindmegetteResults);
-            console.log(`✅ Mindmegette: ${mindmegetteResults.length} results`);
-        } catch (error) {
-            console.error('❌ Mindmegette scrape failed:', error.message);
+        // Search both sites in parallel
+        const [mindmegetteResults, nosaltyResults] = await Promise.allSettled([
+            this.searchMindmegette(query),
+            this.searchNosalty(query)
+        ]);
+
+        if (mindmegetteResults.status === 'fulfilled') {
+            results.push(...mindmegetteResults.value);
         }
-        
-        // Try Nosalty with CORRECT URL
-        try {
-            const nosaltyResults = await this.scrapeNosalty(query);
-            results.push(...nosaltyResults);
-            console.log(`✅ Nosalty: ${nosaltyResults.length} results`);
-        } catch (error) {
-            console.error('❌ Nosalty scrape failed:', error.message);
+
+        if (nosaltyResults.status === 'fulfilled') {
+            results.push(...nosaltyResults.value);
         }
-        
+
         return results.filter(recipe => recipe && recipe.ingredients && recipe.ingredients.length > 0);
     }
 
-    async scrapeMindmegette(query) {
-        // CORRECT Mindmegette search URL
-        const searchUrl = `https://www.mindmegette.hu/kereses?global_filter=${encodeURIComponent(query)}&content_types%5B%5D=recipe`;
-        console.log('🔗 Mindmegette URL:', searchUrl);
-        
-        const html = await this.fetchWithRetry(searchUrl);
-        
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        
-        const recipes = [];
-        
-        // Multiple selector strategies for Mindmegette NEW layout
-        const selectors = [
-            '.recipe-list-item a',
-            '.recipe-card a',
-            '.search-result-item a',
-            'a.recipe-link',
-            'a[href*="/recept/"]',
-            '.item-title a',
-            'h2 a',
-            'h3 a'
-        ];
-        
-        let links = [];
-        for (const selector of selectors) {
-            links = doc.querySelectorAll(selector);
-            if (links.length > 0) {
-                console.log(`✅ Found ${links.length} links with selector: ${selector}`);
-                break;
-            }
-        }
-        
-        console.log(`📊 Total links found on Mindmegette: ${links.length}`);
-        
-        for (const link of Array.from(links).slice(0, 3)) {
-            try {
-                const href = link.getAttribute('href');
-                if (!href) continue;
-                
-                let fullUrl = href;
-                if (!href.startsWith('http')) {
-                    fullUrl = `https://www.mindmegette.hu${href.startsWith('/') ? href : '/' + href}`;
+    async searchMindmegette(query) {
+        try {
+            // CORRECT Mindmegette search URL
+            const searchUrl = `https://www.mindmegette.hu/kereses?global_filter=${encodeURIComponent(query)}&content_types%5B%5D=recipe`;
+            console.log('🔍 Mindmegette search URL:', searchUrl);
+            
+            const html = await this.fetchWithUserAgent(searchUrl);
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            const recipes = [];
+            
+            // Look for recipe links - multiple selector strategies
+            const linkSelectors = [
+                'a[href*="/recept/"]',
+                '.recipe-list-item a',
+                '.search-result-item a',
+                '.item-title a',
+                'h2 a',
+                'h3 a'
+            ];
+            
+            let links = [];
+            for (const selector of linkSelectors) {
+                links = doc.querySelectorAll(selector);
+                if (links.length > 0) {
+                    console.log(`✅ Found ${links.length} links with selector: ${selector}`);
+                    break;
                 }
-                
-                // Get title from multiple possible locations
-                let title = link.textContent?.trim() || 
-                           link.querySelector('h2, h3, .title, .recipe-title')?.textContent?.trim() || 
-                           `${query} recept`;
-                
-                // Clean up title
-                title = title.replace(/\s+/g, ' ').substring(0, 100);
-                
-                if (title && title.length > 5 && !title.includes('©')) {
-                    console.log('🍽️ Processing Mindmegette recipe:', title);
-                    const details = await this.getMindmegetteDetails(fullUrl);
+            }
+            
+            console.log(`📊 Total Mindmegette links found: ${links.length}`);
+            
+            // Process up to 3 recipes
+            for (const link of Array.from(links).slice(0, 3)) {
+                try {
+                    const href = link.getAttribute('href');
+                    if (!href) continue;
                     
-                    if (details) {
+                    // Construct full URL
+                    let fullUrl = href;
+                    if (!href.startsWith('http')) {
+                        fullUrl = `https://www.mindmegette.hu${href.startsWith('/') ? href : '/' + href}`;
+                    }
+                    
+                    // Get title
+                    let title = link.textContent?.trim() || 
+                               link.querySelector('h2, h3, .title')?.textContent?.trim() || 
+                               `${query} recept`;
+                    
+                    title = title.replace(/\s+/g, ' ').substring(0, 100);
+                    
+                    if (title && title.length > 5) {
+                        console.log('🍽️ Processing Mindmegette recipe:', title);
+                        
+                        // Get recipe details
+                        const details = await this.getRecipeDetails(fullUrl, 'mindmegette');
+                        
                         recipes.push({
                             title: title,
                             url: fullUrl,
                             source: 'mindmegette.hu',
                             ...details
                         });
-                        console.log('✅ Added recipe:', title);
-                    } else {
-                        // Add recipe even without details
-                        recipes.push({
-                            title: title,
-                            url: fullUrl,
-                            source: 'mindmegette.hu',
-                            ingredients: ['Hozzávalók betöltése sikertelen'],
-                            instructions: ['Látogasd meg az oldalt a teljes receptért!']
-                        });
-                        console.log('⚠️ Added recipe without details:', title);
                     }
+                } catch (error) {
+                    console.warn('❌ Error processing Mindmegette link:', error);
                 }
-            } catch (error) {
-                console.warn('❌ Error processing Mindmegette link:', error);
             }
+            
+            return recipes;
+            
+        } catch (error) {
+            console.error('❌ Mindmegette search failed:', error);
+            return [];
         }
-        
-        return recipes;
     }
 
-    async scrapeNosalty(query) {
-        // CORRECT Nosalty search URL
-        const searchUrl = `https://www.nosalty.hu/kereses/recept/${encodeURIComponent(query)}`;
-        console.log('🔗 Nosalty URL:', searchUrl);
-        
-        const html = await this.fetchWithRetry(searchUrl);
-        
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        
-        const recipes = [];
-        
-        // Multiple selector strategies for Nosalty
-        const selectors = [
-            '.recipe-card a',
-            '.search-result a',
-            'a.recipe-link',
-            'a[href*="/recept/"]',
-            '.item-title a',
-            'h2 a',
-            'h3 a'
-        ];
-        
-        let links = [];
-        for (const selector of selectors) {
-            links = doc.querySelectorAll(selector);
-            if (links.length > 0) {
-                console.log(`✅ Found ${links.length} links with selector: ${selector}`);
-                break;
-            }
-        }
-        
-        console.log(`📊 Total links found on Nosalty: ${links.length}`);
-        
-        for (const link of Array.from(links).slice(0, 3)) {
-            try {
-                const href = link.getAttribute('href');
-                if (!href) continue;
-                
-                let fullUrl = href;
-                if (!href.startsWith('http')) {
-                    fullUrl = `https://www.nosalty.hu${href.startsWith('/') ? href : '/' + href}`;
+    async searchNosalty(query) {
+        try {
+            // CORRECT Nosalty search URL
+            const searchUrl = `https://www.nosalty.hu/kereses/recept/${encodeURIComponent(query)}`;
+            console.log('🔍 Nosalty search URL:', searchUrl);
+            
+            const html = await this.fetchWithUserAgent(searchUrl);
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            const recipes = [];
+            
+            // Look for recipe links
+            const linkSelectors = [
+                'a[href*="/recept/"]',
+                '.recipe-card a',
+                '.search-result a',
+                '.item-title a',
+                'h2 a',
+                'h3 a'
+            ];
+            
+            let links = [];
+            for (const selector of linkSelectors) {
+                links = doc.querySelectorAll(selector);
+                if (links.length > 0) {
+                    console.log(`✅ Found ${links.length} links with selector: ${selector}`);
+                    break;
                 }
-                
-                // Get title from multiple possible locations
-                let title = link.textContent?.trim() || 
-                           link.querySelector('h2, h3, .title, .recipe-title')?.textContent?.trim() || 
-                           `${query} recept`;
-                
-                // Clean up title
-                title = title.replace(/\s+/g, ' ').substring(0, 100);
-                
-                if (title && title.length > 5 && !title.includes('©')) {
-                    console.log('🍽️ Processing Nosalty recipe:', title);
-                    const details = await this.getNosaltyDetails(fullUrl);
+            }
+            
+            console.log(`📊 Total Nosalty links found: ${links.length}`);
+            
+            // Process up to 3 recipes
+            for (const link of Array.from(links).slice(0, 3)) {
+                try {
+                    const href = link.getAttribute('href');
+                    if (!href) continue;
                     
-                    if (details) {
+                    // Construct full URL
+                    let fullUrl = href;
+                    if (!href.startsWith('http')) {
+                        fullUrl = `https://www.nosalty.hu${href.startsWith('/') ? href : '/' + href}`;
+                    }
+                    
+                    // Get title
+                    let title = link.textContent?.trim() || 
+                               link.querySelector('h2, h3, .title')?.textContent?.trim() || 
+                               `${query} recept`;
+                    
+                    title = title.replace(/\s+/g, ' ').substring(0, 100);
+                    
+                    if (title && title.length > 5) {
+                        console.log('🍽️ Processing Nosalty recipe:', title);
+                        
+                        // Get recipe details
+                        const details = await this.getRecipeDetails(fullUrl, 'nosalty');
+                        
                         recipes.push({
                             title: title,
                             url: fullUrl,
                             source: 'nosalty.hu',
                             ...details
                         });
-                        console.log('✅ Added recipe:', title);
-                    } else {
-                        recipes.push({
-                            title: title,
-                            url: fullUrl,
-                            source: 'nosalty.hu',
-                            ingredients: ['Hozzávalók betöltése sikertelen'],
-                            instructions: ['Látogasd meg az oldalt a teljes receptért!']
-                        });
-                        console.log('⚠️ Added recipe without details:', title);
                     }
-                }
-            } catch (error) {
-                console.warn('❌ Error processing Nosalty link:', error);
-            }
-        }
-        
-        return recipes;
-    }
-
-    async getMindmegetteDetails(url) {
-        try {
-            console.log('🔍 Fetching Mindmegette details:', url);
-            const html = await this.fetchWithRetry(url);
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            
-            // Multiple strategies for ingredients
-            let ingredients = [];
-            const ingredientSelectors = [
-                '.hozzavalok-list li',
-                '.ingredients li',
-                '.ingredient-item',
-                '[class*="hozzaval"] li',
-                '.recipe-ingredients li'
-            ];
-            
-            for (const selector of ingredientSelectors) {
-                const elements = doc.querySelectorAll(selector);
-                if (elements.length > 0) {
-                    ingredients = Array.from(elements)
-                        .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
-                        .filter(text => text.length > 2 && !text.includes('©'));
-                    if (ingredients.length > 0) {
-                        console.log(`✅ Found ${ingredients.length} ingredients with: ${selector}`);
-                        break;
-                    }
+                } catch (error) {
+                    console.warn('❌ Error processing Nosalty link:', error);
                 }
             }
             
-            // Multiple strategies for instructions
-            let instructions = [];
-            const instructionSelectors = [
-                '.preparation-steps li',
-                '.instructions li',
-                '.instruction-step',
-                '[class*="elkeszit"] li',
-                '.recipe-steps li'
-            ];
-            
-            for (const selector of instructionSelectors) {
-                const elements = doc.querySelectorAll(selector);
-                if (elements.length > 0) {
-                    instructions = Array.from(elements)
-                        .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
-                        .filter(text => text.length > 5 && !text.includes('©'));
-                    if (instructions.length > 0) {
-                        console.log(`✅ Found ${instructions.length} instructions with: ${selector}`);
-                        break;
-                    }
-                }
-            }
-            
-            return {
-                ingredients: ingredients.length > 0 ? ingredients.slice(0, 12) : ['Hozzávalók nem elérhetők'],
-                instructions: instructions.length > 0 ? instructions.slice(0, 8) : ['Elkészítés nem elérhető']
-            };
+            return recipes;
             
         } catch (error) {
-            console.error('❌ Error getting Mindmegette details:', error);
-            return null;
+            console.error('❌ Nosalty search failed:', error);
+            return [];
         }
     }
 
-    async getNosaltyDetails(url) {
+    async getRecipeDetails(url, source) {
         try {
-            console.log('🔍 Fetching Nosalty details:', url);
-            const html = await this.fetchWithRetry(url);
+            console.log('🔍 Fetching recipe details:', url);
+            
+            const html = await this.fetchWithUserAgent(url);
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             
-            // Ingredients for Nosalty
             let ingredients = [];
-            const ingredientSelectors = [
-                '.ingredient-list li',
-                '.hozzavalok li',
-                '.hozzavalo-item',
-                '[class*="ingredient"] li',
-                '.recipe-ingredients li'
-            ];
-            
-            for (const selector of ingredientSelectors) {
-                const elements = doc.querySelectorAll(selector);
-                if (elements.length > 0) {
-                    ingredients = Array.from(elements)
-                        .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
-                        .filter(text => text.length > 2);
-                    if (ingredients.length > 0) {
-                        console.log(`✅ Found ${ingredients.length} ingredients with: ${selector}`);
-                        break;
-                    }
-                }
-            }
-            
-            // Instructions for Nosalty
             let instructions = [];
-            const instructionSelectors = [
-                '.instruction-list li',
-                '.steps li',
-                '.step-item',
-                '[class*="instruction"] li',
-                '.recipe-steps li'
-            ];
             
-            for (const selector of instructionSelectors) {
-                const elements = doc.querySelectorAll(selector);
-                if (elements.length > 0) {
-                    instructions = Array.from(elements)
-                        .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
-                        .filter(text => text.length > 5);
-                    if (instructions.length > 0) {
-                        console.log(`✅ Found ${instructions.length} instructions with: ${selector}`);
+            if (source === 'mindmegette') {
+                // Mindmegette ingredient selectors
+                const ingredientSelectors = [
+                    '.hozzavalok-list li',
+                    '.ingredients li',
+                    '[class*="hozzaval"] li',
+                    '.recipe-ingredients li'
+                ];
+                
+                for (const selector of ingredientSelectors) {
+                    const elements = doc.querySelectorAll(selector);
+                    if (elements.length > 0) {
+                        ingredients = Array.from(elements)
+                            .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
+                            .filter(text => text.length > 2);
+                        break;
+                    }
+                }
+                
+                // Mindmegette instruction selectors
+                const instructionSelectors = [
+                    '.preparation-steps li',
+                    '.instructions li',
+                    '[class*="elkeszit"] li',
+                    '.recipe-steps li'
+                ];
+                
+                for (const selector of instructionSelectors) {
+                    const elements = doc.querySelectorAll(selector);
+                    if (elements.length > 0) {
+                        instructions = Array.from(elements)
+                            .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
+                            .filter(text => text.length > 5);
+                        break;
+                    }
+                }
+            } else {
+                // Nosalty ingredient selectors
+                const ingredientSelectors = [
+                    '.ingredient-list li',
+                    '.hozzavalok li',
+                    '[class*="ingredient"] li',
+                    '.recipe-ingredients li'
+                ];
+                
+                for (const selector of ingredientSelectors) {
+                    const elements = doc.querySelectorAll(selector);
+                    if (elements.length > 0) {
+                        ingredients = Array.from(elements)
+                            .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
+                            .filter(text => text.length > 2);
+                        break;
+                    }
+                }
+                
+                // Nosalty instruction selectors
+                const instructionSelectors = [
+                    '.instruction-list li',
+                    '.steps li',
+                    '[class*="instruction"] li',
+                    '.recipe-steps li'
+                ];
+                
+                for (const selector of instructionSelectors) {
+                    const elements = doc.querySelectorAll(selector);
+                    if (elements.length > 0) {
+                        instructions = Array.from(elements)
+                            .map(el => el.textContent?.trim().replace(/\s+/g, ' ') || '')
+                            .filter(text => text.length > 5);
                         break;
                     }
                 }
             }
+            
+            console.log(`📝 Found ${ingredients.length} ingredients, ${instructions.length} instructions`);
             
             return {
-                ingredients: ingredients.length > 0 ? ingredients.slice(0, 12) : ['Hozzávalók nem elérhetők'],
-                instructions: instructions.length > 0 ? instructions.slice(0, 8) : ['Elkészítés nem elérhető']
+                ingredients: ingredients.length > 0 ? ingredients.slice(0, 15) : ['Hozzávalók betöltése sikertelen'],
+                instructions: instructions.length > 0 ? instructions.slice(0, 10) : ['Elkészítés betöltése sikertelen']
             };
             
         } catch (error) {
-            console.error('❌ Error getting Nosalty details:', error);
-            return null;
+            console.error('❌ Error getting recipe details:', error);
+            return {
+                ingredients: ['Hozzávalók betöltése sikertelen'],
+                instructions: ['Elkészítés betöltése sikertelen']
+            };
         }
     }
 
     createEnhancedFallback(query) {
         console.log('📝 Creating enhanced fallback for:', query);
         
-        const commonIngredients = {
-            'pörkölt': ['marha- vagy sertéshús', 'vöröshagyma', 'pirospaprika', 'olaj', 'só', 'bors', 'fokhagyma'],
-            'palacsinta': ['liszt', 'tojás', 'tej', 'szódavíz', 'só', 'olaj', 'vaníliás cukor'],
-            'gulyás': ['marhahús', 'burgonya', 'sárgarépa', 'hagyma', 'pirospaprika', 'kömény', 'zeller'],
-            'töltött paprika': ['zöldpaprika', 'darált hús', 'rizs', 'hagyma', 'paradicsom', 'fűszerek', 'tojás'],
-            'rántott hús': ['csirkecomb vagy sertésszelet', 'liszt', 'tojás', 'zsemlemorzsa', 'só', 'olaj'],
-            'tészta': ['tészta', 'olívaolaj', 'só', 'fokhagyma', 'reszelt sajt', 'friss fűszerek']
-        };
-        
-        const baseIngredients = commonIngredients[query.toLowerCase()] || [
-            'alapanyagok', 'só', 'bors', 'olaj', 'fűszerek', 'friss zöldségek'
-        ];
-        
-        return [
-            {
-                title: `${query} - alaprecept`,
-                source: 'helyi adatbázis',
-                url: '#',
-                ingredients: baseIngredients,
+        const commonRecipes = {
+            'sajt': {
+                title: `${query} - sajtos specialitás`,
+                ingredients: [
+                    'sajt (trappista, ementáli, vagy parmezán)',
+                    'tejföl vagy tej',
+                    'tojás',
+                    'liszt',
+                    'só, bors',
+                    'fűszerek ízlés szerint'
+                ],
                 instructions: [
                     'Előkészítsd az alapanyagokat.',
-                    'Kövesd a hagyományos elkészítési módot.',
-                    'Ízlés szerint fűszerezd.',
-                    'Szervírozd frissen, melegen.',
+                    'Keverd össze a hozzávalókat.',
+                    'Süsd vagy főzd meg a megfelelő hőmérsékleten.',
+                    'Szervírozd frissen.',
                     'Jó étvágyat!'
                 ]
+            },
+            'torta': {
+                title: `${query} - torta recept`,
+                ingredients: [
+                    'liszt',
+                    'cukor', 
+                    'tojás',
+                    'vaj vagy olaj',
+                    'sütőpor',
+                    'vanília',
+                    'tej vagy tejföl'
+                ],
+                instructions: [
+                    'Elkészítjük a tésztát.',
+                    'Kiolajozott formába öntjük.',
+                    'Előmelegített sütőben megsütjük.',
+                    'Kihűtjük és tálaljuk.',
+                    'Porcukorral megszórhatjuk.'
+                ]
             }
-        ];
+        };
+
+        let bestMatch = commonRecipes.sajt;
+        for (const [category, recipe] of Object.entries(commonRecipes)) {
+            if (query.toLowerCase().includes(category)) {
+                bestMatch = recipe;
+                break;
+            }
+        }
+
+        return [{
+            title: bestMatch.title,
+            source: 'helyi adatbázis',
+            url: '#',
+            ingredients: bestMatch.ingredients,
+            instructions: bestMatch.instructions
+        }];
     }
 
     async generateRandomMeal() {
         const mealTypes = {
-            'Leves': ['gulyásleves', 'húsleves', 'zöldségleves', 'babgulyás', 'gombaleves'],
-            'Főétel': ['pörkölt', 'rántott hús', 'tészta', 'töltött paprika', 'sült csirke', 'lasagne']
+            'Leves': ['gulyásleves', 'húsleves', 'zöldségleves', 'babgulyás'],
+            'Főétel': ['pörkölt', 'rántott hús', 'tészta', 'töltött paprika', 'sült csirke']
         };
         
         const randomSoup = mealTypes['Leves'][Math.floor(Math.random() * mealTypes['Leves'].length)];
@@ -611,16 +509,31 @@ class CorrectScraper {
         ]);
         
         return {
-            'Leves': soupResults[0] || this.createEnhancedFallback(randomSoup)[0],
-            'Főétel': mainResults[0] || this.createEnhancedFallback(randomMain)[0]
+            'Leves': soupResults[0],
+            'Főétel': mainResults[0]
         };
     }
 }
 
-// Global scraper instance
-const scraper = new CorrectScraper();
+// Enhanced UI with better feedback
+class RecipeManager {
+    constructor() {
+        this.scraper = new RealBrowserScraper();
+    }
 
-// UI Functions (same as before, but with better logging)
+    async searchRecipes(query) {
+        return await this.scraper.searchRecipes(query);
+    }
+
+    async generateRandomMeal() {
+        return await this.scraper.generateRandomMeal();
+    }
+}
+
+// Global recipe manager
+const recipeManager = new RecipeManager();
+
+// UI Functions
 function setLoading(loading) {
     const loadingEl = document.getElementById('loading');
     const searchBtn = document.getElementById('searchBtn');
@@ -632,9 +545,6 @@ function setLoading(loading) {
         document.getElementById('results').innerHTML = '';
         document.getElementById('randomMeal').style.display = 'none';
         hideMessage();
-        console.log('🔄 Loading started...');
-    } else {
-        console.log('✅ Loading finished');
     }
 }
 
@@ -643,7 +553,6 @@ function showMessage(text, type = 'info') {
     messageEl.innerHTML = `<p>${text}</p>`;
     messageEl.className = `message-box ${type}`;
     messageEl.style.display = 'block';
-    console.log(`💬 Message: ${text}`);
 }
 
 function hideMessage() {
@@ -662,17 +571,26 @@ async function searchRecipes() {
     setLoading(true);
     
     try {
-        const recipes = await scraper.searchRecipes(query);
+        const recipes = await recipeManager.searchRecipes(query);
         displayRecipes(recipes);
         
         if (recipes.length === 0) {
             showMessage('Nem találhatók receptek. Próbálj másik kulcsszót!', 'info');
         } else {
-            showMessage(`${recipes.length} recept található a(z) "${query}" kulcsszóra`, 'info');
+            const sourceCount = {};
+            recipes.forEach(recipe => {
+                sourceCount[recipe.source] = (sourceCount[recipe.source] || 0) + 1;
+            });
+            
+            const sourceText = Object.entries(sourceCount).map(([source, count]) => 
+                `${count} ${source}`
+            ).join(', ');
+            
+            showMessage(`${recipes.length} recept található (${sourceText})`, 'info');
             setTimeout(hideMessage, 4000);
         }
     } catch (error) {
-        console.error('❌ Search error:', error);
+        console.error('Search error:', error);
         showMessage(`Hiba történt: ${error.message}`, 'error');
     } finally {
         setLoading(false);
@@ -684,12 +602,12 @@ async function generateRandomMeal() {
     hideMessage();
     
     try {
-        const meal = await scraper.generateRandomMeal();
+        const meal = await recipeManager.generateRandomMeal();
         displayRandomMeal(meal);
         showMessage('🎉 Véletlenszerű menü generálva!', 'info');
-        setTimeout(hideMessage, 4000);
+        setTimeout(hideMessage, 3000);
     } catch (error) {
-        console.error('❌ Random meal error:', error);
+        console.error('Random meal error:', error);
         showMessage(`Hiba a menü generálásakor: ${error.message}`, 'error');
     } finally {
         setLoading(false);
@@ -704,6 +622,12 @@ function displayRecipes(recipes) {
             <div class="no-results">
                 <h3>😔 Nincs találat</h3>
                 <p>Próbálj meg másik kulcsszót!</p>
+                <div class="suggestions">
+                    <p><strong>Próbáld ezeket:</strong></p>
+                    <button onclick="quickSearch('birsalmasajt')">Birsalmasajt</button>
+                    <button onclick="quickSearch('pörkölt')">Pörkölt</button>
+                    <button onclick="quickSearch('palacsinta')">Palacsinta</button>
+                </div>
             </div>
         `;
         return;
@@ -742,8 +666,6 @@ function displayRecipes(recipes) {
             </div>
         </div>
     `).join('');
-    
-    console.log(`📊 Displayed ${recipes.length} recipes`);
 }
 
 function displayRandomMeal(meal) {
@@ -792,7 +714,6 @@ function displayRandomMeal(meal) {
     `;
     
     container.style.display = 'block';
-    console.log('🎊 Random meal displayed');
 }
 
 function quickSearch(query) {
@@ -805,7 +726,6 @@ function clearAll() {
     document.getElementById('results').innerHTML = '';
     document.getElementById('randomMeal').style.display = 'none';
     document.getElementById('message').style.display = 'none';
-    console.log('🗑️ All cleared');
 }
 
 // Event listeners
@@ -816,10 +736,11 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🍳 Családi Recept Kereső elindult!');
+    console.log('🌐 User Agent:', navigator.userAgent);
     document.getElementById('searchInput').focus();
     document.getElementById('loading').style.display = 'none';
     
     // Show welcome message
-    showMessage('Üdvözöllek! Kezdj el keresni recepteket. Próbáld: palacsinta, pörkölt, gulyás', 'info');
+    showMessage('Üdvözöllek! A kereső a böngésződdel fogja lekérni a recepteket.', 'info');
     setTimeout(hideMessage, 5000);
 });
