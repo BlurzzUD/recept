@@ -3,87 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magyar Recept Kereső - Családi Verzió</title>
+    <title>Családi Recept Kereső</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍲</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="header-content">
-                <h1>🍳 Családi Recept Kereső</h1>
-                <p>Keresd meg a kedvenc receptjeidet mindmegette.hu és nosalty.hu oldalakról</p>
-                <div class="site-badges">
-                    <span class="badge mindmegette">mindmegette.hu</span>
-                    <span class="badge nosalty">nosalty.hu</span>
-                </div>
+            <h1>🍳 Családi Recept Kereső</h1>
+            <p>Keresd meg a kedvenc receptjeidet magyar oldalakról</p>
+            <div class="sources">
+                <span class="source-tag">mindmegette.hu</span>
+                <span class="source-tag">nosalty.hu</span>
             </div>
         </header>
 
         <main>
-            <section class="search-section">
-                <div class="search-container">
-                    <div class="input-group">
-                        <input type="text" id="searchInput" 
-                               placeholder="Mit szeretnél főzni? (pl. pörkölt, palacsinta, töltött paprika)..."
-                               autocomplete="off">
-                        <button id="searchBtn" onclick="searchRecipes()">
-                            <span class="btn-text">🔍 Keresés</span>
-                            <span class="btn-loading" style="display: none;">⏳</span>
-                        </button>
-                    </div>
-                    
-                    <div class="quick-searches">
-                        <span>Gyors keresések:</span>
-                        <button class="quick-btn" onclick="quickSearch('pörkölt')">Pörkölt</button>
-                        <button class="quick-btn" onclick="quickSearch('palacsinta')">Palacsinta</button>
-                        <button class="quick-btn" onclick="quickSearch('töltött paprika')">Töltött Paprika</button>
-                        <button class="quick-btn" onclick="quickSearch('gulyásleves')">Gulyásleves</button>
-                    </div>
+            <section class="search-box">
+                <div class="search-group">
+                    <input type="text" id="searchInput" 
+                           placeholder="Mit szeretnél főzni? (pl. pörkölt, palacsinta)..."
+                           autocomplete="off">
+                    <button id="searchBtn" onclick="searchRecipes()">
+                        <span class="btn-text">🔍 Keresés</span>
+                        <span class="btn-loading">⏳</span>
+                    </button>
                 </div>
-
-                <div class="action-buttons">
-                    <button class="random-btn" onclick="generateRandomMeal()">
-                        <span class="btn-icon">🎲</span>
-                        Véletlenszerű 2 Fogásos Menü
-                    </button>
-                    <button class="clear-btn" onclick="clearResults()">
-                        <span class="btn-icon">🗑️</span>
-                        Eredmények Törlése
-                    </button>
+                
+                <div class="quick-buttons">
+                    <small>Gyors választások:</small>
+                    <button class="quick-btn" onclick="quickSearch('pörkölt')">Pörkölt</button>
+                    <button class="quick-btn" onclick="quickSearch('palacsinta')">Palacsinta</button>
+                    <button class="quick-btn" onclick="quickSearch('gulyás')">Gulyás</button>
                 </div>
             </section>
 
-            <section class="results-section">
-                <div class="loading" id="loading" style="display: none;">
-                    <div class="spinner-container">
-                        <div class="spinner"></div>
-                        <div class="loading-text">
-                            <p>Receptek keresése...</p>
-                            <small>Ez eltarthat néhány másodpercig</small>
-                        </div>
-                    </div>
+            <section class="action-buttons">
+                <button class="action-btn primary" onclick="generateRandomMeal()">
+                    🎲 Véletlen 2 Fogásos Menü
+                </button>
+                <button class="action-btn secondary" onclick="clearAll()">
+                    🗑️ Törlés
+                </button>
+            </section>
+
+            <section class="results-area">
+                <div id="loading" class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Receptek betöltése...</p>
                 </div>
 
-                <div id="results" class="results-grid"></div>
+                <div id="results" class="recipes-grid"></div>
                 
-                <div id="randomMeal" class="random-meal-container" style="display: none;"></div>
+                <div id="randomMeal" class="random-meal"></div>
 
-                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                <div id="message" class="message-box"></div>
             </section>
         </main>
 
         <footer>
-            <div class="footer-content">
-                <div class="disclaimer">
-                    <h3>📝 Fontos információk</h3>
-                    <p>Ez az alkalmazás kizárólan családi használatra készült, explicit engedéllyel a forrásoldalak tulajdonosaitól.</p>
-                    <p>A receptek szerzői jogvédettek, kizárólan személyes használatra szólnak.</p>
-                </div>
-                <div class="tech-info">
-                    <p><strong>Technikai információk:</strong> React nélküli pure JavaScript • GitHub Pages • CORS proxy</p>
-                </div>
-            </div>
+            <p><strong>📝 Megjegyzés:</strong> Családi használatra, engedéllyel. Receptek forrása: mindmegette.hu és nosalty.hu</p>
         </footer>
     </div>
 
